@@ -1,6 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
+
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  duration: number;
+  delay: number;
+}
 import { Moon, Sun, ExternalLink, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { uselessWebsites } from "@/lib/useless-websites"
@@ -10,8 +19,8 @@ export default function UselessWebsiteRoulette() {
   const [isDarkTheme, setIsDarkTheme] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
-  const [particles, setParticles] = useState([])
-  const [randomWebsite, setRandomWebsite] = useState(null)
+  const [particles, setParticles] = useState<Particle[]>([])
+  const [randomWebsite, setRandomWebsite] = useState<{ name: string; description: string; url: string } | null>(null)
 
   useEffect(() => {
     // Check user preference
