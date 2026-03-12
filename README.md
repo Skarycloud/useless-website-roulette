@@ -1,42 +1,56 @@
-# Useless Website Roulette 🌀
+# Web Roulette
 
-![Useless Website Roulette Banner](https://github.com/Skarycloud/useless-website-roulette/blob/master/useless-website-roulette.png)
+Web Roulette is a small Next.js app that helps you pick a random corner of the internet. The homepage shows four site cards at a time, lets you reshuffle the selection, and opens the chosen site in a new tab.
 
-## 🔗 [Live Demo](https://useless-website-roulette.vercel.app/)
+![Web Roulette preview](./useless-website-roulette.png)
 
-## 🚀 About The Project
+## Live Site
 
-Useless Website Roulette is a fun web application that takes you on a random journey through the most bizarre, pointless, and entertaining corners of the internet. Built with Next.js and Tailwind CSS, it provides a simple and engaging way to discover a variety of "useless" but amusing websites.
+<https://useless-website-roulette.vercel.app/>
 
-### 🌟 Why Use This?
+## What The Site Does
 
--   **Quick Distraction:** Instantly find something silly to break up your day.
--   **Conversation Starter:** Discover unique websites to share with friends.
--   **Simple Entertainment:** Enjoy the randomness of the internet.
+- Shows a rotating set of useless, funny, weird, and oddly relaxing websites.
+- Lets the user select one option from a 2x2 card grid.
+- Includes a `Roll it` action to replace the current four choices.
+- Launches the selected website in a new browser tab.
+- Uses a custom dark visual style with a textured background and simple loading skeletons.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-### Frontend Development
+- Next.js 16
+- React 19
+- TypeScript
+- Tailwind CSS 4
+- Custom client-side UI logic with inline component styling
 
-![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white)
-![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
+## Project Structure
 
-## 🚀 Getting Started
+- `src/components/useless-website-roulette.tsx`: main roulette interface and interactions
+- `lib/useless-websites.ts`: website data source used by the roulette
+- `src/app/page.tsx`: homepage entry
+- `src/app/layout.tsx`: app metadata and font setup
+- `src/app/globals.css`: active global styles and theme variables
+- `public/bg.png`: background image used on the page
 
-Follow these steps to set up a local copy of the project:
+## Getting Started
 
 ```bash
-# Clone the repository
-git clone [https://github.com/Skarycloud/useless-website-roulette.git](https://github.com/Skarycloud/useless-website-roulette.git)
-
-# Navigate to the project directory
-cd useless-website-roulette
-
-# Install dependencies
 npm install
-
-# Run the development server
 npm run dev
+```
 
-# Open http://localhost:3000 in your browser
+Open `http://localhost:3000` in your browser.
+
+## Available Scripts
+
+- `npm run dev` starts the development server with Turbopack
+- `npm run build` creates the production build
+- `npm run start` starts the production server
+- `npm run lint` runs the Next.js lint command
+
+## Notes
+
+- The app uses a curated local website list rather than fetching entries from an API.
+- Path aliases are configured so imports can use `@/` for files inside `src/`.
+- The repository currently contains both root-level `app/` files and active `src/app/` files; the live page implementation uses the `src/` codepath described above.
