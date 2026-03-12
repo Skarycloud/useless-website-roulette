@@ -39,6 +39,12 @@
   --accent-yellow-dark: #c99a00;
   --accent-yellow-hover: #FFD54F;
   --button-text: #7A3E00;
+  
+  /* Gray buttons */
+  --button-gray: #3c464e;
+  --button-gray-dark: #2d343a;
+  --button-gray-hover: #4d5862;
+  --button-gray-text: rgba(156,163,175,0.9);
 
   /* Misc */
   --primary: #FFC83D;

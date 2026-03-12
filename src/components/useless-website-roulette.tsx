@@ -1,15 +1,15 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { uselessWebsites } from "@/lib/useless-websites"
+import { websites } from "@/lib/useless-websites"
 
-interface UselessWebsite {
+interface Website {
   name: string;
   description: string;
   url: string;
 }
 
-function getRandomSample(arr: UselessWebsite[], n: number): UselessWebsite[] {
+function getRandomSample(arr: Website[], n: number): Website[] {
   const shuffled = [...arr].sort(() => Math.random() - 0.5)
   return shuffled.slice(0, n)
 }
@@ -33,6 +33,7 @@ const C = {
 function cardStyle(selected: boolean): React.CSSProperties {
   return {
     width: "100%",
+    minHeight: "140px", // Increased height
     textAlign: "left",
     background: C.card,
     borderTopWidth: "2px",
@@ -40,16 +41,19 @@ function cardStyle(selected: boolean): React.CSSProperties {
     borderRightWidth: "2px",
     borderBottomWidth: "4px",
     borderStyle: "solid",
-    borderColor: selected ? C.yellow : C.borderDefault,
+    borderTopColor: selected ? C.yellow : C.borderDefault,
+    borderLeftColor: selected ? C.yellow : C.borderDefault,
+    borderRightColor: selected ? C.yellow : C.borderDefault,
     borderBottomColor: selected ? C.yellowDark : C.borderDefault,
-    borderRadius: "16px",
-    padding: "14px 18px",
+    borderRadius: "20px", // More rounded
+    padding: "24px", // More padding
     cursor: "pointer",
     transition: "all 0.15s ease",
     outline: "none",
     display: "flex",
     flexDirection: "column" as const,
-    gap: "4px",
+    justifyContent: "center", // Center content vertically
+    gap: "8px", // More gap
     fontFamily: "inherit",
   }
 }
@@ -64,7 +68,9 @@ function primaryBtn(disabled: boolean): React.CSSProperties {
     borderRightWidth: "2px",
     borderBottomWidth: "4px",
     borderStyle: "solid",
-    borderColor: disabled ? "transparent" : C.yellow,
+    borderTopColor: disabled ? "transparent" : C.yellow,
+    borderLeftColor: disabled ? "transparent" : C.yellow,
+    borderRightColor: disabled ? "transparent" : C.yellow,
     borderBottomColor: disabled ? "transparent" : C.yellowDark,
     background: disabled ? "rgba(88,95,106,0.5)" : C.yellow,
     color: disabled ? "rgba(255,255,255,0.4)" : C.yellowText,
@@ -78,7 +84,10 @@ function primaryBtn(disabled: boolean): React.CSSProperties {
   }
 }
 
-function ghostBtn(): React.CSSProperties {
+function rollBtn(): React.CSSProperties {
+  const goldBase = "#FFC83D"
+  const goldDark = "#c99a00"
+  const borderColor = "rgba(75,85,99,0.6)"
   return {
     flex: "0 0 auto",
     padding: "0 20px",
@@ -89,29 +98,33 @@ function ghostBtn(): React.CSSProperties {
     borderRightWidth: "2px",
     borderBottomWidth: "4px",
     borderStyle: "solid",
-    borderColor: "rgba(75,85,99,0.6)",
-    borderBottomColor: "rgba(30,35,42,0.9)",
-    background: "rgba(35,40,48,0.8)",
-    color: "rgba(156,163,175,0.9)",
+    borderTopColor: borderColor,
+    borderLeftColor: borderColor,
+    borderRightColor: borderColor,
+    borderBottomColor: goldDark,
+    background: goldBase,
+    color: "#7A3E00",
     fontSize: "0.9rem",
     fontWeight: 800,
     cursor: "pointer",
     fontFamily: "inherit",
     transition: "all 0.1s ease",
-    boxShadow: "0 4px 0 rgba(30,35,42,0.9)",
+    boxShadow: `0 4px 0 ${goldDark}`,
+    transform: "translateY(0)",
   }
 }
 
-export default function UselessWebsiteRoulette() {
-  const [options, setOptions] = useState<UselessWebsite[]>([])
-  const [selected, setSelected] = useState<UselessWebsite | null>(null)
+export default function WebRoulette() {
+  const [options, setOptions] = useState<Website[]>([])
+  const [selected, setSelected] = useState<Website | null>(null)
   const [launched, setLaunched] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
-    setOptions(getRandomSample(uselessWebsites as UselessWebsite[], 6))
+    setOptions(getRandomSample(websites as Website[], 4))
   }, [])
 
-  const handleSelect = (site: UselessWebsite) => {
+  const handleSelect = (site: Website) => {
     setSelected(site)
     setLaunched(false)
   }
@@ -122,14 +135,39 @@ export default function UselessWebsiteRoulette() {
     window.open(selected.url, "_blank")
   }
 
-  const handleShuffle = () => {
-    setOptions(getRandomSample(uselessWebsites as UselessWebsite[], 6))
+  const handleRoll = () => {
+    setIsLoading(true)
     setSelected(null)
     setLaunched(false)
+    setTimeout(() => {
+      setOptions(getRandomSample(websites as Website[], 4))
+      setIsLoading(false)
+    }, 1000)
   }
 
+  const SkeletonCard = () => (
+    <div style={{
+      ...cardStyle(false),
+      cursor: "default",
+      pointerEvents: "none",
+    }}>
+      <div className="animate-pulse" style={{ height: "1.4rem", background: C.borderDefault, borderRadius: "6px", width: "70%", marginBottom: "12px" }} />
+      <div className="animate-pulse" style={{ height: "1rem", background: C.borderDefault, borderRadius: "6px", width: "90%", marginBottom: "8px" }} />
+      <div className="animate-pulse" style={{ height: "1rem", background: C.borderDefault, borderRadius: "6px", width: "40%" }} />
+    </div>
+  )
+
   return (
-    <div style={{ minHeight: "100vh", background: C.bg, display: "flex", flexDirection: "column", fontFamily: '"Nunito", sans-serif' }}>
+    <div style={{ 
+      minHeight: "100vh", 
+      backgroundImage: `linear-gradient(rgba(14, 26, 32, 0.8), rgba(14, 26, 32, 0.9)), url('/bg.png')`,
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: "fixed",
+      display: "flex", 
+      flexDirection: "column", 
+      fontFamily: '"Nunito", sans-serif' 
+    }}>
 
       {/* ── NAVBAR ──────────────────────────────────── */}
       <nav style={{
@@ -153,11 +191,11 @@ export default function UselessWebsiteRoulette() {
             fontWeight: 700,
             padding: "3px 10px",
             borderRadius: "999px",
-            background: "rgba(255,200,61,0.1)",
+            background: "rgba(72,192,247,0.1)", // Consistent with blue accent C.yellow
             color: C.yellow,
-            border: `1px solid rgba(255,200,61,0.2)`,
+            border: `1px solid rgba(72,192,247,0.2)`,
           }}>
-            {uselessWebsites.length} sites
+            {websites.length} sites
           </span>
           <a
             href="https://github.com/Skarycloud/useless-website-roulette"
@@ -187,7 +225,7 @@ export default function UselessWebsiteRoulette() {
         {/* Header */}
         <div>
           <h1 style={{ fontSize: "clamp(1.5rem, 4vw, 1.875rem)", fontWeight: 800, color: C.textPrimary, margin: "0 0 0.5rem", letterSpacing: "-0.02em", lineHeight: 1.2 }}>
-            Pick a useless website 🌐
+            Pick a website 🌐
           </h1>
           <p style={{ fontSize: "0.9rem", fontWeight: 400, color: C.textSecondary, margin: 0, lineHeight: 1.6 }}>
             Choose one and discover a perfectly pointless corner of the internet.
@@ -195,93 +233,105 @@ export default function UselessWebsiteRoulette() {
         </div>
 
         {/* ── SELECTION GRID ──────────────────────── */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "10px" }}>
-          {options.map(site => {
-            const isSelected = selected?.url === site.url
-            return (
-              <button
-                key={site.url}
-                onClick={() => handleSelect(site)}
-                style={cardStyle(isSelected)}
-                onMouseEnter={e => {
-                  const el = e.currentTarget as HTMLElement
-                  if (!isSelected) {
-                    el.style.borderColor = C.borderHover
-                    el.style.borderBottomColor = C.borderHover
-                  }
-                  el.style.transform = "translateY(-2px)"
-                }}
-                onMouseLeave={e => {
-                  const el = e.currentTarget as HTMLElement
-                  if (!isSelected) {
-                    el.style.borderColor = C.borderDefault
-                    el.style.borderBottomColor = C.borderDefault
-                  }
-                  el.style.transform = "translateY(0)"
-                }}
-              >
-                <p style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  color: isSelected ? C.yellow : C.textPrimary,
-                  margin: 0,
-                  lineHeight: 1.3,
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  whiteSpace: "nowrap",
-                }}>
-                  {site.name}
-                </p>
-                <p style={{
-                  fontSize: "0.75rem",
-                  fontWeight: 400,
-                  color: C.textSecondary,
-                  margin: 0,
-                  lineHeight: 1.45,
-                  overflow: "hidden",
-                  display: "-webkit-box",
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: "vertical" as const,
-                }}>
-                  {site.description}
-                </p>
-              </button>
-            )
-          })}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: "16px" }}>
+          {isLoading ? (
+            Array.from({ length: 4 }).map((_, i) => <SkeletonCard key={i} />)
+          ) : (
+            options.map(site => {
+              const isSelected = selected?.url === site.url
+              return (
+                <button
+                  key={site.url}
+                  onClick={() => handleSelect(site)}
+                  style={cardStyle(isSelected)}
+                  onMouseEnter={e => {
+                    const el = e.currentTarget as HTMLElement
+                    if (!isSelected) {
+                      el.style.borderTopColor = C.borderHover
+                      el.style.borderLeftColor = C.borderHover
+                      el.style.borderRightColor = C.borderHover
+                      el.style.borderBottomColor = C.borderHover
+                    }
+                    el.style.transform = "translateY(-4px)" // Larger lift
+                  }}
+                  onMouseLeave={e => {
+                    const el = e.currentTarget as HTMLElement
+                    if (!isSelected) {
+                      el.style.borderTopColor = C.borderDefault
+                      el.style.borderLeftColor = C.borderDefault
+                      el.style.borderRightColor = C.borderDefault
+                      el.style.borderBottomColor = C.borderDefault
+                    }
+                    el.style.transform = "translateY(0)"
+                  }}
+                >
+                  <p style={{
+                    fontSize: "1.05rem", // Larger title
+                    fontWeight: 800,
+                    color: isSelected ? C.yellow : C.textPrimary,
+                    margin: 0,
+                    lineHeight: 1.3,
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    whiteSpace: "nowrap",
+                  }}>
+                    {site.name}
+                  </p>
+                  <p style={{
+                    fontSize: "0.85rem", // Larger description
+                    fontWeight: 400,
+                    color: C.textSecondary,
+                    margin: 0,
+                    lineHeight: 1.45,
+                    overflow: "hidden",
+                    display: "-webkit-box",
+                    WebkitLineClamp: 3, // Allow more lines
+                    WebkitBoxOrient: "vertical" as const,
+                  }}>
+                    {site.description}
+                  </p>
+                </button>
+              )
+            })
+          )}
         </div>
 
         {/* ── ACTIONS ─────────────────────────────── */}
         <div style={{ display: "flex", gap: "10px" }}>
           {/* Shuffle — ghost */}
           <button
-            onClick={handleShuffle}
-            style={ghostBtn()}
+            onClick={handleRoll}
+            style={rollBtn()}
             onMouseEnter={e => {
               const el = e.currentTarget as HTMLElement
-              el.style.background = "rgba(45,50,58,0.9)"
-              el.style.color = C.textPrimary
+              el.style.background = "#FFD54F"
               el.style.transform = "translateY(2px)"
-              el.style.boxShadow = "0 2px 0 rgba(30,35,42,0.9)"
+              el.style.boxShadow = "0 2px 0 #c99a00"
+              el.style.borderBottomColor = "#c99a00"
             }}
             onMouseLeave={e => {
               const el = e.currentTarget as HTMLElement
-              el.style.background = "rgba(35,40,48,0.8)"
-              el.style.color = "rgba(156,163,175,0.9)"
+              el.style.background = "#FFC83D"
               el.style.transform = "translateY(0)"
-              el.style.boxShadow = "0 4px 0 rgba(30,35,42,0.9)"
+              el.style.boxShadow = "0 4px 0 #c99a00"
+              el.style.borderBottomColor = "#c99a00"
             }}
             onMouseDown={e => {
               const el = e.currentTarget as HTMLElement
               el.style.transform = "translateY(4px)"
               el.style.boxShadow = "none"
+              el.style.borderBottomWidth = "0px"
+              el.style.borderTopWidth = "6px"
             }}
             onMouseUp={e => {
               const el = e.currentTarget as HTMLElement
               el.style.transform = "translateY(0)"
-              el.style.boxShadow = "0 4px 0 rgba(30,35,42,0.9)"
+              el.style.boxShadow = "0 4px 0 #c99a00"
+              el.style.borderBottomWidth = "4px"
+              el.style.borderTopWidth = "2px"
             }}
           >
-            🔀 Shuffle
+            🎰 Roll it
           </button>
 
           {/* Launch — primary yellow */}
@@ -321,7 +371,7 @@ export default function UselessWebsiteRoulette() {
         </div>
 
         <p style={{ textAlign: "center", fontSize: "0.78rem", fontWeight: 700, color: C.borderDefault, margin: 0 }}>
-          {uselessWebsites.length} pointless websites and counting
+          {websites.length} pointless websites and counting
         </p>
       </main>
 

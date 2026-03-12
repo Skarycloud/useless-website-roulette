@@ -1,10 +1,10 @@
-export interface UselessWebsite {
+export interface Website {
   name: string
   url: string
   description: string
 }
 
-const _raw: UselessWebsite[] = [
+const _raw: Website[] = [
   {
     name: "The Useless Web",
     url: "https://theuselessweb.com/",
@@ -1014,7 +1014,7 @@ const _raw: UselessWebsite[] = [
 
 // Deduplicate by URL — the raw list has many repeated entries
 const _seen = new Set<string>()
-export const uselessWebsites: UselessWebsite[] = _raw.filter(site => {
+export const websites: Website[] = _raw.filter(site => {
   if (_seen.has(site.url)) return false
   _seen.add(site.url)
   return true

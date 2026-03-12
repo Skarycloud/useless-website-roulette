@@ -1,6 +1,6 @@
-import UselessWebsiteRoulette from "@/components/useless-website-roulette"
+import WebRoulette from "@/components/useless-website-roulette"
 
 export default function Home() {
-  return <UselessWebsiteRoulette />
+  return <WebRoulette />
 }
 
