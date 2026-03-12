@@ -19,94 +19,57 @@ const config: Config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ["var(--font-nunito)", "sans-serif"],
+      },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
+        border: "var(--border-default)",
+        "border-hover": "var(--border-hover)",
+        input: "var(--border-default)",
+        ring: "var(--border-hover)",
+        background: "var(--background)",
+        foreground: "var(--text-primary)",
+        card: {
+          DEFAULT: "var(--bg-card)",
+          foreground: "var(--text-primary)",
+        },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#FFC83D",
+          dark: "#c99a00",
+          hover: "#FFD54F",
+          foreground: "#7A3E00",
         },
         secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
+          DEFAULT: "var(--text-secondary)",
+          foreground: "var(--bg-card)",
         },
         muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
+          DEFAULT: "var(--placeholder-bg)",
+          foreground: "var(--icon-muted)",
         },
         accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
+          DEFAULT: "#58A6FF",
+          foreground: "#ffffff",
+          yellow: "#FFC83D",
+          green: "#58cc02",
+          red: "#ef4444",
+        },
+        destructive: {
+          DEFAULT: "#ef4444",
+          foreground: "#ffffff",
         },
         popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
+          DEFAULT: "var(--bg-card)",
+          foreground: "var(--text-primary)",
         },
       },
       borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-        ping: {
-          "0%": { transform: "scale(1)", opacity: "1" },
-          "75%, 100%": { transform: "scale(2)", opacity: "0" },
-        },
-        pulse: {
-          "0%, 100%": { opacity: "1" },
-          "50%": { opacity: ".5" },
-        },
-        float: {
-          "0%": { transform: "translateY(0px) translateX(0px)" },
-          "50%": { transform: "translateY(-20px) translateX(10px)" },
-          "100%": { transform: "translateY(0px) translateX(0px)" },
-        },
-        "bounce-slow": {
-          "0%, 100%": { transform: "translateY(0)" },
-          "50%": { transform: "translateY(-10px)" },
-        },
-        "spin-slow": {
-          "0%": { transform: "rotate(0deg)" },
-          "100%": { transform: "rotate(360deg)" },
-        },
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-        ping: "ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite",
-        pulse: "pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        float: "float 8s ease-in-out infinite",
-        "bounce-slow": "bounce-slow 3s ease-in-out infinite",
-        "spin-slow": "spin-slow 8s linear infinite",
-        "fade-in": "fade-in 0.5s ease-out",
+        lg: "16px",
+        md: "12px",
+        sm: "8px",
       },
     },
   },
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   plugins: [require("tailwindcss-animate")],
 } satisfies Config
 
